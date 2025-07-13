@@ -122,34 +122,22 @@ fn levenshteinImpl(allocator: std.mem.Allocator, a: []const u8, b: []const u8, m
     return array[ll];
 }
 
-// Tests
-test "basic functionality" {
+// Tests taken from https://raw.githubusercontent.com/sindresorhus/leven/refs/heads/main/test.js
+test "basic tests" {
     const allocator = testing.allocator;
 
-    try testing.expectEqual(@as(usize, 0), try levenshtein(allocator, "test", "test", null));
-    try testing.expectEqual(@as(usize, 1), try levenshtein(allocator, "a", "b", null));
+    try testing.expectEqual(@as(usize, 1), try levenshtein(allocator, "b", "a", null));
+    try testing.expectEqual(@as(usize, 1), try levenshtein(allocator, "ab", "ac", null));
+    try testing.expectEqual(@as(usize, 1), try levenshtein(allocator, "ac", "bc", null));
+    try testing.expectEqual(@as(usize, 1), try levenshtein(allocator, "abc", "axc", null));
     try testing.expectEqual(@as(usize, 3), try levenshtein(allocator, "kitten", "sitting", null));
-}
-
-test "utf-8 support" {
-    const allocator = testing.allocator;
-
-    try testing.expectEqual(@as(usize, 1), try levenshtein(allocator, "😊", "😢", null));
-    try testing.expectEqual(@as(usize, 1), try levenshtein(allocator, "café", "cafe", null));
-    try testing.expectEqual(@as(usize, 1), try levenshtein(allocator, "你好", "你坏", null));
-}
-
-test "edge cases" {
-    const allocator = testing.allocator;
-
-    try testing.expectEqual(@as(usize, 0), try levenshtein(allocator, "", "", null));
-    try testing.expectEqual(@as(usize, 3), try levenshtein(allocator, "", "abc", null));
-    try testing.expectEqual(@as(usize, 3), try levenshtein(allocator, "abc", "", null));
-}
-
-test "max parameter" {
-    const allocator = testing.allocator;
-
-    try testing.expectEqual(@as(usize, 2), try levenshtein(allocator, "kitten", "sitting", 2));
-    try testing.expectEqual(@as(usize, 0), try levenshtein(allocator, "same", "same", 5));
+    try testing.expectEqual(@as(usize, 6), try levenshtein(allocator, "xabxcdxxefxgx", "1ab2cd34ef5g6", null));
+    try testing.expectEqual(@as(usize, 2), try levenshtein(allocator, "cat", "cow", null));
+    try testing.expectEqual(@as(usize, 6), try levenshtein(allocator, "xabxcdxxefxgx", "abcdefg", null));
+    try testing.expectEqual(@as(usize, 7), try levenshtein(allocator, "javawasneat", "scalaisgreat", null));
+    try testing.expectEqual(@as(usize, 3), try levenshtein(allocator, "example", "samples", null));
+    try testing.expectEqual(@as(usize, 6), try levenshtein(allocator, "sturgeon", "urgently", null));
+    try testing.expectEqual(@as(usize, 6), try levenshtein(allocator, "levenshtein", "frankenstein", null));
+    try testing.expectEqual(@as(usize, 5), try levenshtein(allocator, "distance", "difference", null));
+    try testing.expectEqual(@as(usize, 2), try levenshtein(allocator, "因為我是中國人所以我會說中文", "因為我是英國人所以我會說英文", null));
 }
