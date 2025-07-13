@@ -12,7 +12,17 @@ Fast, UTF-8 aware Levenshtein distance implementation for Zig.
 ## Installation
 
 ```bash
-zig fetch --save https://github.com/unorsk/levenshtein/archive/refs/heads/main.tar.gz
+zig fetch --save git+https://github.com/unorsk/levenshtein.git
+```
+
+Add this to your build.zig
+```zig
+    const levenshtein = b.dependency("levenshtein", .{
+        .target = target,
+        .optimize = optimize,
+    });
+
+    exe.root_module.addImport("levenshtein", levenshtein.module("levenshtein"));
 ```
 
 ## Usage
