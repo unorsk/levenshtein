@@ -20,6 +20,13 @@ pub fn build(b: *std.Build) void {
 
     b.installArtifact(lib);
 
+    // Export the module for use by other projects
+    _ = b.addModule("levenshtein", .{
+        .root_source_file = b.path("src/levenshtein.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+
     // Unit tests
     const lib_unit_tests = b.addTest(.{
         .root_module = lib_mod,
